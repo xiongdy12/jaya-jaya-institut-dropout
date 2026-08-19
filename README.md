@@ -100,7 +100,7 @@ Jaya Jaya Institut memahami data dan memantau performa siswa tanpa perlu menjala
 
 ![Business Dashboard](dashboard/dashboard.png)
 
-**Tautan dashboard:** `ISI_DENGAN_LINK_DASHBOARD_ANDA`
+**Tautan dashboard:** https://datastudio.google.com/reporting/ec0c2142-c50d-468b-90ab-1c43c27a062a
 
 > Jika menggunakan **Metabase**, sertakan kredensial berikut:
 > - Email: `root@mail.com`
