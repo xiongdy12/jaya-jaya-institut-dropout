@@ -173,7 +173,7 @@ Prototype machine learning dibangun menggunakan **Streamlit** dan memiliki dua m
 
 ### Tautan Prototype
 
-**Streamlit Community Cloud:** `ISI_DENGAN_LINK_STREAMLIT_APP_ANDA`
+**Streamlit Community Cloud:** https://jaya-jaya-institut-dropout.streamlit.app
 
 ### Menjalankan Secara Lokal
 
