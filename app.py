@@ -2,6 +2,9 @@
 Jaya Jaya Institut - Student Dropout Early Warning System
 Prototype machine learning berbasis Streamlit.
 
+Model: Logistic Regression, dilatih pada kohort Dropout vs Graduate (3.630 mahasiswa).
+Mahasiswa berstatus Enrolled tidak dipakai untuk training - mereka adalah sasaran prediksi.
+
 Menjalankan secara lokal:  streamlit run app.py
 """
 
@@ -101,12 +104,14 @@ with st.sidebar:
     st.markdown(f"""
 **Model** : {bundle['model_name']}
 **Threshold** : {THRESHOLD}
-**ROC-AUC** : 0.934
-**Recall (dropout)** : 0.799
+**ROC-AUC** : 0.975
+**Accuracy** : 0.935
+**Recall (dropout)** : 0.894
 """)
     st.divider()
-    st.caption("Skor risiko adalah probabilitas mahasiswa berstatus *Dropout*. "
-               "Gunakan sebagai alat penyaring awal, bukan keputusan final.")
+    st.caption("Skor risiko adalah probabilitas mahasiswa berakhir **Dropout** dibanding "
+               "**Graduate**. Model dilatih hanya pada mahasiswa yang telah menyelesaikan "
+               "masa studinya. Gunakan sebagai alat penyaring awal, bukan keputusan final.")
 
 st.title("Sistem Deteksi Dini Risiko Dropout Mahasiswa")
 
@@ -223,6 +228,9 @@ if mode == "Prediksi Individu":
         if data["Age_at_enrollment"] > 25:
             recs.append("Masuk pada usia di atas 25 tahun — tawarkan kelas fleksibel/malam "
                         "dan konseling manajemen waktu.")
+        if rate < 75 and rate >= 50:
+            recs.append(f"Tingkat kelulusan mata kuliah **{rate:.0f}%** berada di bawah ambang "
+                        "aman 75% — jadwalkan konseling akademik preventif.")
         if data["Curricular_units_2nd_sem_grade"] < 10 and data["Curricular_units_2nd_sem_enrolled"] > 0:
             recs.append("Nilai semester 2 di bawah 10 — evaluasi beban SKS dan tunjuk dosen wali aktif.")
         if not recs:
@@ -257,7 +265,7 @@ else:
         out["Skor_Risiko(%)"] = (probs * 100).round(1)
         out["Level_Risiko"] = pd.cut(probs, [-0.01, 0.30, 0.60, 1.0],
                                      labels=["Rendah", "Sedang", "Tinggi"])
-        out["Prediksi"] = np.where(probs >= THRESHOLD, "Berisiko Dropout", "Aman")
+        out["Prediksi"] = np.where(probs >= THRESHOLD, "Berisiko Dropout", "Cenderung Graduate")
 
         c1, c2, c3, c4 = st.columns(4)
         c1.metric("Total Mahasiswa", len(out))
